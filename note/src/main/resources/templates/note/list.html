@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="layout">
+<head>
+    <meta charset="UTF-8">
+    <title>List</title>
+</head>
+
+<script>
+    function filterByCategory() {
+        document.getElementById("form").submit();
+    }
+</script>
+
+<body>
+
+<div layout:fragment="content">
+    <h1>Note List</h1>
+
+    <form>
+        <p class="h3">Search by first title or content:</p>
+        <input name="search" type="text">
+        <input type="submit" class="btn-box-tool" th:value="Search"/>
+    </form>
+
+<!--    <form id="form"  >-->
+<!--        <div class="form-group">-->
+<!--            <label class="col-sm-4 control-label">Category</label>-->
+
+<!--            <div class="col-sm-10">-->
+<!--                <td>-->
+<!--                    <select name="cate_id"  onchange="form.submit()">-->
+<!--                        <option th:each="cat : ${categories}" th:value="${cat.id}"-->
+<!--                        th:selected="(${cat.id}==${cate_id})"><span th:text="${cat.name}"></span></option>-->
+<!--                    </select>-->
+<!--                </td>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+
+    <br>
+    <br>
+    <section class="content">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <h3 class="box-title">Note Data Table</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="notes" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th>Id</th>
+                                <th>Title</th>
+                                <th>Content</th>
+                                <th>Category</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <th:block th:each="nt :${notes}">
+                                <tr>
+                                    <td th:text="${nt.id}"></td>
+                                    <td th:text="${nt.tilte}"></td>
+                                    <td th:text="${nt.content}"></td>
+                                    <td><a th:text="${nt.category.name}"
+                                           th:href="@{#}"/></td>
+
+                                    <td>
+                                        <a type="submit" th:href="@{/edit-note/__${nt.id}__ }" class="btn btn-facebook">Edit</a>
+                                        <a type="submit" th:href="@{/delete-note/__${nt.id}__ }"
+                                           onclick="return confirm('Delete thissss ?????')" class="btn btn-danger">Delete</a>
+                                    </td>
+
+                                </tr>
+                            </th:block>
+                            </tbody>
+
+                        </table>
+
+                        <br>
+                        <div >
+                            <a th:href="@{'/notes'(page=${notes.number - 1})}"
+                               th:if="${notes.hasPrevious()}">Previous</a>
+                            <span th:text="${notes.number + 1}"></span>/<span th:text="${notes.totalPages}"></span>
+                            <a th:href="@{'/notes'(page=${notes.number + 1})}" th:if="${notes.hasNext()}">Next</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /.row -->
+    </section>
+</div>
+</body>
+</html>
